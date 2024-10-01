@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Any, BinaryIO
 import boto3
 from botocore import exceptions
 
+
 if TYPE_CHECKING:
     from mypy_boto3_s3.type_defs import (
         DeleteObjectOutputTypeDef,
@@ -16,7 +17,7 @@ else:
     PutObjectOutputTypeDef = dict
     S3Client = dict
 
-from config import S3_BUCKET_NAME, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ENDPOINT_URL
+from config import AWS_ACCESS_KEY_ID, AWS_ENDPOINT_URL, AWS_SECRET_ACCESS_KEY, S3_BUCKET_NAME
 
 
 class S3:

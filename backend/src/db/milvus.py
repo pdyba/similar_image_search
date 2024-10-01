@@ -1,7 +1,9 @@
 import logging
 
 from pymilvus import MilvusClient
-from config import MILVUS_ENDPOINT, MILVUS_TOKEN, MODEL_NAME, COLLECTION_NAME, MODEL_DIM
+
+from config import COLLECTION_NAME, MILVUS_ENDPOINT, MILVUS_TOKEN, MODEL_DIM
+
 
 DEFAULT_OUTPUT_FIELDS = ["vector", "file_format"]
 logger = logging.getLogger(__name__)
@@ -35,7 +37,11 @@ class MilvusConnector:
         )
 
     def get_search_results_from_vector(
-        self, query_vector, output_fields: list | None = None, limit: int = 5
+        self,
+        query_vector,
+        output_fields: list | None = None,
+        limit: int = 10,
+        precision: float = 0.99,
     ):
         search_res = self.milvus_client.search(
             collection_name=COLLECTION_NAME.value,
@@ -43,8 +49,9 @@ class MilvusConnector:
             search_params={
                 "metric_type": "COSINE",
                 "params": {
-                    "radius": 0.3,
-                    "range_filter": 0.9,
+                    "nprobe": 20,  # number of partitions to search
+                    "radius": 0.6,  # Only consider vectors with similarity >= x
+                    "range_filter": precision,  # Return results with similarity >= y
                 },
             },
             output_fields=output_fields or DEFAULT_OUTPUT_FIELDS,

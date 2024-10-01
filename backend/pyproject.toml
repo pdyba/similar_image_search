@@ -40,6 +40,7 @@ sqlalchemy-stubs = "0.4"
 
 [tool.poetry.group.dev.dependencies]
 mypy-boto3-s3 = "^1.35.22"
+isort = "^5.13.2"
 
 [tool.isort]
 multi_line_output = 3

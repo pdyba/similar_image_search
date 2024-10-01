@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
+
 from use_cases import get_image_by_id
+
 
 router = APIRouter()
 

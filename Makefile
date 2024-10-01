@@ -19,23 +19,18 @@ test:
 # lint
 lint:
 	@echo "running ruff...."
-	docker compose exec backend ruff check src
+	docker compose exec backend ruff check /code/src
 
 black:
 	@echo "running black...."
-	docker compose exec backend black .
+	docker compose exec backend black /code/src
 
 mypy:
 	@echo "running mypy...."
-	docker compose exec backend mypy src/
+	docker compose exec backend mypy /code/src
 
-# database
-init-db: alembic-init alembic-migrate
-	@echo "initializing database...."
-	docker compose exec backend python3 src/db/init_db.py
 
 # misc
-
 hooks: check
 	@echo "installing pre-commit hooks...."
 	pre-commit install

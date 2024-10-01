@@ -1,7 +1,8 @@
 import logging
 
 from dotenv import load_dotenv
-from lbz.configuration import EnvValue, ConfigParser
+from lbz.configuration import ConfigParser, EnvValue
+
 
 load_dotenv()
 

@@ -1,6 +1,8 @@
 from fastapi import APIRouter, UploadFile
 from fastapi.responses import JSONResponse, Response
+
 from use_cases import upload_image
+
 
 router = APIRouter()
 

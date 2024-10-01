@@ -1,11 +1,11 @@
-from typing import BinaryIO
 import zlib
+from typing import BinaryIO
+
 from PIL import Image
 
-from image_encoder import get_image_embedding
-from exceptions import UploadField
-
 from db.milvus import MilvusConnector
+from exceptions import UploadField
+from image_encoder import get_image_embedding
 from storage import S3
 
 
@@ -19,7 +19,7 @@ def upload_image(file: BinaryIO, file_format: str) -> int:
         response = milvus_client.insert(data=data)
         if response["insert_count"] == 1:
             return data["id"]
-        raise UploadField(f"Upload field: due to an error occurs during the embedding process")
+        raise UploadField("Upload field: due to an error occurs during the embedding process")
     except Exception as e:
         raise UploadField(
             f"Upload field: due to an error occurs during the embedding process:\n{e}"

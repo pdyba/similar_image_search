@@ -6,8 +6,8 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 
 from api import routes
-from db import get_redis_client
 from config import API_VERSION
+from db import get_redis_client
 
 
 logger = logging.getLogger(__name__)

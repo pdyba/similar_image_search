@@ -1440,7 +1440,7 @@ python-versions = ">=3.8"
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.11"
-content-hash = "41efa6bab40092f11b378dbc9e0d71bcf79a1ec7b498000b36e14b920dad119a"
+content-hash = "1bedd7a34f498019da4cb677531937e9096b6a504b4d7c18e2b7fbfad6a7f2b2"
 
 [metadata.files]
 aioredis = [
