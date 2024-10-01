@@ -10,8 +10,7 @@ logger = logging.getLogger(__name__)
 def get_image_by_id(img_id: str) -> dict | None:
     try:
         milvus_client = MilvusConnector()
-        data = milvus_client.get_by_id(img_id)
-        if not data:
+        if not (data := milvus_client.get_by_id(img_id)):
             return
         data = data[0]
         return {

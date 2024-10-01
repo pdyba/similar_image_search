@@ -10,7 +10,7 @@ from config import MODEL_NAME
 
 
 class FeatureExtractor:
-    def __init__(self):
+    def __init__(self) -> None:
         self.model = timm.create_model(
             MODEL_NAME.value, pretrained=True, num_classes=0, global_pool="avg"
         )

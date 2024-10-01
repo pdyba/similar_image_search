@@ -26,7 +26,7 @@ def upload_image(file: BinaryIO, file_format: str) -> int:
         ) from e
 
 
-def prepare_image(file: BinaryIO, file_format: str):
+def prepare_image(file: BinaryIO, file_format: str) -> dict:
     image = Image.open(file)
     image_embedding = get_image_embedding(image)
     file.seek(0)

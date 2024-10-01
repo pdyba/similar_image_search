@@ -2,6 +2,7 @@ import os
 from glob import glob
 
 import requests
+from requests import Response
 from tqdm import tqdm
 
 
@@ -18,17 +19,17 @@ def upload_file(file_path) -> str:
         return resp.json()["id"]
 
 
-def get_img(img_id):
+def get_img(img_id) -> Response:
     resp = requests.get(DOWNLOAD_URL.format(img_id=img_id))
     return resp
 
 
-def get_similar_imgs(img_id):
+def get_similar_imgs(img_id) -> Response:
     resp = requests.get(SIMILAR_URL.format(img_id=img_id))
     return resp
 
 
-def upload_data_set():
+def upload_data_set() -> None:
     data_dir = "../test_images_set/"
     image_paths = glob(os.path.join(data_dir, "**/*.JPEG"))
     image_paths += glob(os.path.join(data_dir, "**/*.jpeg"))
@@ -39,7 +40,7 @@ def upload_data_set():
         upload_file(file_path)
 
 
-def test_all():
+def test_all() -> None:
     # upload_data_set()
     data_dir = "../test_images/*"
     image_paths = glob(os.path.join(data_dir))

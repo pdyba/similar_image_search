@@ -33,7 +33,7 @@ class S3:
         return boto3.client("s3")
 
     @classmethod
-    def create_bucket(cls):
+    def create_bucket(cls) -> None:
         cls._s3().create_bucket(Bucket=S3_BUCKET_NAME.value)
 
     @classmethod

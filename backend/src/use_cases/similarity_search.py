@@ -6,7 +6,7 @@ from image_encoder import get_image_embedding
 from storage import S3
 
 
-def find_similar_images_using_image():
+def find_similar_images_using_image() -> list[dict]:
     milvus_client = MilvusConnector()
 
     with open("../backend/test_images/z00.png", "rb") as file:
@@ -24,10 +24,11 @@ def find_similar_images_using_image():
     return results
 
 
-def find_similar_images_using_id(img_id: str, limit: int, precision: float = 0.99):
+def find_similar_images_using_id(
+    img_id: str, limit: int, precision: float = 0.99
+) -> list[dict] | None:
     milvus_client = MilvusConnector()
-    image = milvus_client.get_by_id(img_id)
-    if not image:
+    if not (image := milvus_client.get_by_id(img_id)):
         return None
     vector: ndarray = reshape(image[0]["vector"], newshape=(1, -1)).flatten()
 

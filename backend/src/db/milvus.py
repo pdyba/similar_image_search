@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class MilvusConnector:
-    def __init__(self):
+    def __init__(self) -> None:
         self._milvus_client = None
 
     @property
@@ -25,7 +25,8 @@ class MilvusConnector:
         if self.milvus_client.has_collection(COLLECTION_NAME.value):
             if drop_old is False:
                 raise RuntimeError(
-                    f"Collection {COLLECTION_NAME.value} already exists. Set drop_old=True to create a new one instead."
+                    f"Collection {COLLECTION_NAME.value} already exists. "
+                    f"Set drop_old=True to create a new one instead."
                 )
             return
         return self.milvus_client.create_collection(
