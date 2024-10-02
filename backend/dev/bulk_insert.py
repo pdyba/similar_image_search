@@ -2,9 +2,8 @@ import os
 import sys
 from glob import glob
 
-from tqdm import tqdm
-
 from db import MilvusConnector
+from tqdm import tqdm
 from use_cases import prepare_image
 
 
@@ -24,7 +23,8 @@ def insert_image_set(data_dir: str) -> None:
                 data.append(prepare_image(file, filepath.rsplit(".", maxsplit=1)[-1]))
         except Exception as e:
             print(
-                f"Skipping file: {filepath} due to an error occurs during the embedding process:\n{e}"
+                f"Skipping file: {filepath} due to an error occurs "
+                f"during the embedding process:\n{e}"
             )
             continue
 

@@ -1,31 +1,10 @@
-from numpy import ndarray, reshape
-from PIL import Image
-
 from db.milvus import MilvusConnector
-from image_encoder import get_image_embedding
+from numpy import ndarray, reshape
 from storage import S3
 
 
-def find_similar_images_using_image() -> list[dict]:
-    milvus_client = MilvusConnector()
-
-    with open("../backend/test_images/z00.png", "rb") as file:
-        uploaded_img = Image.open(file)
-
-    width, height = uploaded_img.size
-
-    new_width = 370
-    new_height = int((new_width / width) * height)
-    uploaded_img = uploaded_img.resize((new_width, new_height))
-
-    results = milvus_client.get_search_results_from_vector(
-        query_vector=get_image_embedding(uploaded_img)
-    )
-    return results
-
-
 def find_similar_images_using_id(
-    img_id: str, limit: int, precision: float = 0.99
+    img_id: str, limit: int = 10, precision: float = 0.99
 ) -> list[dict] | None:
     milvus_client = MilvusConnector()
     if not (image := milvus_client.get_by_id(img_id)):
@@ -35,7 +14,7 @@ def find_similar_images_using_id(
     results = milvus_client.get_search_results_from_vector(
         query_vector=vector, limit=limit, precision=precision
     )
-    return [_build_data(img) for img in results[0]]
+    return [_build_data(img) for img in results]
 
 
 def _build_data(img: dict) -> dict:

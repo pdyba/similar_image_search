@@ -1,9 +1,8 @@
 import logging
 
-from pymilvus import MilvusClient
-
 from config import COLLECTION_NAME, MILVUS_ENDPOINT, MILVUS_TOKEN, MODEL_DIM
-
+from numpy import array, ndarray
+from pymilvus import MilvusClient, MilvusException
 
 DEFAULT_OUTPUT_FIELDS = ["vector", "file_format"]
 logger = logging.getLogger(__name__)
@@ -19,7 +18,7 @@ class MilvusConnector:
             self._milvus_client = MilvusClient(uri=MILVUS_ENDPOINT.value, token=MILVUS_TOKEN.value)
         return self._milvus_client
 
-    def create_collection(self, drop_old: bool | None = None):
+    def create_collection(self, drop_old: bool | None = None) -> None:
         if self.milvus_client.has_collection(COLLECTION_NAME.value) and drop_old:
             self.milvus_client.drop_collection(COLLECTION_NAME.value)
         if self.milvus_client.has_collection(COLLECTION_NAME.value):
@@ -28,8 +27,8 @@ class MilvusConnector:
                     f"Collection {COLLECTION_NAME.value} already exists. "
                     f"Set drop_old=True to create a new one instead."
                 )
-            return
-        return self.milvus_client.create_collection(
+            return None
+        self.milvus_client.create_collection(
             collection_name=COLLECTION_NAME.value,
             dimension=MODEL_DIM.value,
             metric_type="COSINE",
@@ -39,12 +38,12 @@ class MilvusConnector:
 
     def get_search_results_from_vector(
         self,
-        query_vector,
+        query_vector: array | ndarray,
         output_fields: list | None = None,
         limit: int = 10,
         precision: float = 0.99,
-    ):
-        search_res = self.milvus_client.search(
+    ) -> list[dict]:
+        return self.milvus_client.search(
             collection_name=COLLECTION_NAME.value,
             data=[query_vector],
             search_params={
@@ -57,10 +56,9 @@ class MilvusConnector:
             },
             output_fields=output_fields or DEFAULT_OUTPUT_FIELDS,
             limit=limit,
-        )
-        return search_res
+        )[0]
 
-    def insert(self, data) -> dict | list:
+    def insert(self, data: dict) -> dict | list:
         return self.milvus_client.insert(
             collection_name=COLLECTION_NAME.value,
             data=data,
@@ -72,3 +70,9 @@ class MilvusConnector:
             ids=img_id,
             output_fields=output_fields or DEFAULT_OUTPUT_FIELDS,
         )
+
+    def get_collection_stats(self) -> dict | None:
+        try:
+            return self.milvus_client.get_collection_stats(collection_name=COLLECTION_NAME.value)
+        except MilvusException:
+            return

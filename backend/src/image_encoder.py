@@ -1,12 +1,11 @@
 import timm
 import torch
+from config import MODEL_NAME
 from numpy import ndarray
 from PIL import Image
 from sklearn.preprocessing import normalize
 from timm.data import resolve_data_config
 from timm.data.transforms_factory import create_transform
-
-from config import MODEL_NAME
 
 
 class FeatureExtractor:

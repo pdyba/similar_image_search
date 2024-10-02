@@ -3,7 +3,6 @@ import logging
 from dotenv import load_dotenv
 from lbz.configuration import ConfigParser, EnvValue
 
-
 load_dotenv()
 
 COLLECTION_NAME = EnvValue[str]("COLLECTION_NAME")

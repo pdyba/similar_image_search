@@ -5,17 +5,20 @@ import requests
 from requests import Response
 from tqdm import tqdm
 
-
 BASE_URL = "http://localhost/v1"
+HEALTH_URL = f"{BASE_URL}/health"
 UPLOAD_URL = f"{BASE_URL}/upload"
 DOWNLOAD_URL = f"{BASE_URL}/download/{{img_id}}"
 SIMILAR_URL = f"{BASE_URL}/similar/{{img_id}}"
 
 
+def get_health() -> dict:
+    return requests.get(HEALTH_URL).json()
+
+
 def upload_file(file_path) -> str:
     with open(file_path, "rb") as file:
         resp = requests.post(UPLOAD_URL, files={"file": file})
-        print(resp.text)
         return resp.json()["id"]
 
 
@@ -41,6 +44,7 @@ def upload_data_set() -> None:
 
 
 def test_all() -> None:
+    print(get_health())
     # upload_data_set()
     data_dir = "../test_images/*"
     image_paths = glob(os.path.join(data_dir))

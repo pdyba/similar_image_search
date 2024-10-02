@@ -1,15 +1,14 @@
 import zlib
 from typing import BinaryIO
 
-from PIL import Image
-
 from db.milvus import MilvusConnector
 from exceptions import UploadField
 from image_encoder import get_image_embedding
+from PIL import Image
 from storage import S3
 
 
-def upload_image(file: BinaryIO, file_format: str) -> int:
+def upload_image(file: BinaryIO, file_format: str) -> int | None:
     try:
         milvus_client = MilvusConnector()
         data = prepare_image(file, file_format)

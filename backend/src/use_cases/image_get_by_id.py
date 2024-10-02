@@ -3,7 +3,6 @@ import logging
 from db.milvus import MilvusConnector
 from storage import S3
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -11,7 +10,7 @@ def get_image_by_id(img_id: str) -> dict | None:
     try:
         milvus_client = MilvusConnector()
         if not (data := milvus_client.get_by_id(img_id)):
-            return
+            return None
         data = data[0]
         return {
             "id": data["id"],
@@ -19,3 +18,4 @@ def get_image_by_id(img_id: str) -> dict | None:
         }
     except Exception as e:
         logger.exception(e)
+        return None
